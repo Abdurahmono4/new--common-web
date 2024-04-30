@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { BiCart } from "react-icons/bi";
 
 function Navbar() {
-  const { total } = useSelector((store) => store.products);
+  // const { total } = useSelector((store) => store.products);
   return (
     <div>
       <div className="navbar bg-base-100 py-4 mb-10">
@@ -53,7 +53,7 @@ function Navbar() {
           <div className="indicator">
             <div className="indicator bg-white">
               <span className="indicator-item badge badge-secondary">
-                {total}
+                {/* {total} */}
               </span>
               <button className="btn bg-inherit ">
                 <BiCart className="w-8 h-8" />

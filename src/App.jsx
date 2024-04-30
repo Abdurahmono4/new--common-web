@@ -1,31 +1,74 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
-import { calculateTotal } from "./features/products/productsSlice";
-import ProductsList from "./components/ProductsList";
 
+//routes
+import { createBrowserRouter, RouterProvider, Routes } from "react-router-dom";
+
+//from index.js
+import {
+  About,
+  Error,
+  Login,
+  Register,
+  Cart,
+  CheckOut,
+  HomeLayout,
+  Landing,
+  Orders,
+  Products,
+  SingleProducts,
+} from "./pages/index";
+import { SiN26 } from "react-icons/si";
 function App() {
-  const { total } = useSelector((store) => store.products);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(calculateTotal());
-  }, [total]);
-
-  return (
-    <div className="max-w-4xl mx-auto ">
-      <Navbar />
-      <ProductsList />
-      <p>
-        <span className="">Total Price:</span>
-        <span className="">{useSelector((state) => state.products.total)}</span>
-        <span className="">$ .00</span>
-        <span className=""></span>
-      </p>
-
-      <h1>Counter</h1>
-    </div>
-  );
+  const routes = createBrowserRouter([
+    {
+      path: "/",
+      element: <HomeLayout />,
+      errorElement: <Error />,
+      children: [
+        {
+          index: true,
+          element: <Landing />,
+        },
+        {
+          path: "products",
+          element: <Products />,
+        },
+        {
+          path: "about",
+          element: <About />,
+        },
+        {
+          path: "product/:id",
+          element: <SingleProducts />,
+        },
+        {
+          path: "cart",
+          element: <Cart />,
+        },
+        {
+          path: "checkout",
+          element: <CheckOut />,
+        },
+        {
+          path: "orders",
+          element: <Orders />,
+        },
+      ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
+      errorElement: <Error />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+      errorElement: <Error />,
+    },
+  ]);
+  return <RouterProvider router={routes} />;
 }
 
 export default App;
