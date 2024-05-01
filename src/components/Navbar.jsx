@@ -1,10 +1,44 @@
 import { useSelector } from "react-redux";
 import { BiCart } from "react-icons/bi";
+import NavLinks from "./NavLinks";
+
+import { IoSunnyOutline } from "react-icons/io5";
+import { IoMoonOutline } from "react-icons/io5";
+import { useState } from "react";
+import { useEffect } from "react";
+
+const themes = { winter: "winter", dracula: "dark" };
+
+function darkModeFromLocalStorage() {
+  return localStorage.getItem("mode") || themes.winter;
+}
 
 function Navbar() {
   // const { total } = useSelector((store) => store.products);
+
+  const [theme, setTheme] = useState(darkModeFromLocalStorage());
+  console.log(theme);
+
+  const handleClick = () => {
+    const newTheme = theme == themes.winter ? themes.dracula : themes.winter;
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("mode", theme);
+
+    // Apply background style for dracula theme
+    if (theme === themes.dracula) {
+      document.body.style.color = "white";
+    } else {
+      document.body.style.backgroundColor = "";
+      document.body.style.color = ""; // Reset for winter theme
+    }
+  }, [theme]);
+
   return (
-    <div>
+    <div className="mx-auto max-w-4xl">
       <div className="navbar bg-base-100 py-4 mb-10">
         <div className="navbar-start">
           <div className="dropdown">
@@ -44,12 +78,27 @@ function Navbar() {
             </ul>
           </div>
         </div>
-        <div className="navbar-center">
-          <a className="btn btn-ghost text-2xl capitalize hover:bg-green-500">
-            MyShop
-          </a>
+        <div className="navbar-center hidden lg:flex">
+          <NavLinks />
         </div>
+
         <div className="navbar-end">
+          <div className="flex gap-10 items-center">
+            <label className="swap swap-rotate">
+              {/* this hidden checkbox controls the state */}
+              <input
+                type="checkbox"
+                onClick={() => handleClick()}
+                defaultChecked={theme == "winter" ? true : false}
+              />
+
+              {/* sun icon */}
+              <IoSunnyOutline className="w-8 h-8 swap-on fill-current" />
+
+              {/* moon icon */}
+              <IoMoonOutline className="w-8 h-8 swap-off fill-current" />
+            </label>
+          </div>
           <div className="indicator">
             <div className="indicator bg-white">
               <span className="indicator-item badge badge-secondary">
